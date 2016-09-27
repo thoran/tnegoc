@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.0.13
+# 0.0.14
 # 20160927
 
 BUNDLE_DEFINITIONS = {
@@ -32,8 +32,7 @@ end
 def order_processor(order, bundle_definitions)
   order.collect do |line_item|
     quantity, code = line_item.split
-    quantity = quantity.to_i
-    {code => bundler(quantity, bundle_definitions[code], {})}
+    {code => bundler(quantity.to_i, bundle_definitions[code], {})}
   end
 end
 
