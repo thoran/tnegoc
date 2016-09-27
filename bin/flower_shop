@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.0.8
+# 0.0.9
 # 20160926
 
 BUNDLE_DEFINITIONS = {
@@ -12,11 +12,11 @@ BUNDLE_DEFINITIONS = {
 
 def bundler(quantity, bundle_definition, bundles)
   divisor = bundle_definition.keys.max
-  new_bundle_definition = bundle_definition.dup
-  new_bundle_definition.delete(divisor)
   if quantity.zero?
     return bundles
   elsif quantity >= divisor
+    new_bundle_definition = bundle_definition.dup
+    new_bundle_definition.delete(divisor)
     result, remainder = quantity.divmod(divisor)
     bundles[divisor] = result
     return_value = bundler(remainder, new_bundle_definition, bundles)
@@ -41,7 +41,7 @@ end
 def main
   order = []
   until (input = gets) == "\n"
-    order << input.strip
+    order << input.chomp
   end
   order_maker(order)
 end
