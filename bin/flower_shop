@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.1.0
+# 0.1.1
 # 20160927
 
 BUNDLE_DEFINITIONS = {
@@ -38,9 +38,10 @@ end
 
 def output_delivery(processed_order, bundle_definitions)
   processed_order.each do |line_item|
-    total = line_item[:bundles].inject(0){|total, bundle| total += bundle_definitions[line_item[:code]][bundle.first] * bundle.last}
-    puts "#{line_item[:quantity]} #{line_item[:code]} #{total}"
+    total = (line_item[:bundles].inject(0){|total, bundle| total += bundle_definitions[line_item[:code]][bundle.first] * bundle.last}).round(2)
+    puts "#{line_item[:quantity]} #{line_item[:code]} $#{total}"
     line_item[:bundles].each do |bundle|
+      print ' ' * 6
       puts "#{bundle.last} x #{bundle.first} $#{(bundle_definitions[line_item[:code]][bundle.first] * bundle.last).round(2)}"
     end
   end
