@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.0.11
+# 0.0.12
 # 20160927
 
 BUNDLE_DEFINITIONS = {
@@ -10,18 +10,18 @@ BUNDLE_DEFINITIONS = {
   'T58' => {9 => 16.99, 5 => 9.95, 3 => 5.95},
 }
 
-def bundler(quantity, bundle_definition, bundles)
+def bundler(dividend, bundle_definition, bundles)
   divisor = bundle_definition.keys.max
-  if quantity.zero?
+  if dividend.zero?
     return bundles
-  elsif quantity >= divisor
+  elsif dividend >= divisor
     new_bundle_definition = bundle_definition.dup
     new_bundle_definition.delete(divisor)
-    result, remainder = quantity.divmod(divisor)
+    quotient, remainder = dividend.divmod(divisor)
     if return_value = bundler(remainder, new_bundle_definition, bundles)
-      bundles[divisor] = result
+      bundles[divisor] = quotient
     else
-      return_value = bundler(quantity, new_bundle_definition, bundles)
+      return_value = bundler(dividend, new_bundle_definition, bundles)
     end
     return return_value
   else
