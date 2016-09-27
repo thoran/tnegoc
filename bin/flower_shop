@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.0.0
+# 0.0.1
 # 20160926
 
 BUNDLE_DEFINITIONS = {
@@ -18,6 +18,8 @@ def bundler(quantity, code, bundles)
     result, remainder = quantity.divmod(divisor)
     bundles[result] = divisor
     bundler(remainder, code, bundles)
+  elsif quantity.zero?
+    bundles
   else
     raise "This order can't be bundled."
   end
@@ -26,7 +28,8 @@ end
 def order_maker(order)
   order.each do |line_item|
     quantity, code = line_item.split
-    bundles = bundler(quantity, code, {})
+    quantity = quantity.to_i
+    p bundles = bundler(quantity, code, {})
   end
 end
 
