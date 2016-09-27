@@ -1,21 +1,23 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.1.4
+# 0.2.0
 # 20160927
 
-BUNDLE_DEFINITIONS = {
-  'R12' => {10 => 12.99, 5 => 6.99},
-  'L09' => {9 => 24.95, 6 => 16.95, 3 => 9.95},
-  'T58' => {9 => 16.99, 5 => 9.95, 3 => 5.95},
-}
-
-def take_order
+def read_order
   order = []
-  until (input = gets) == "\n"
-    order << input.chomp
+  if ARGV[1] && File.exist?(ARGV[1])
+    File.read(ARGV[1]).split("\n").each do |line|
+      order << line
+    end
   end
   order
+end
+
+def read_bundle_definitions
+  if ARGV[0] && File.exist?(ARGV[0])
+    instance_eval(File.read(ARGV[0]))
+  end
 end
 
 def bundler(dividend, bundle_definition, bundles)
@@ -57,10 +59,11 @@ def output_delivery_docket(processed_order, bundle_definitions)
   end
 end
 
-def main(bundle_definitions)
-  order = take_order
+def main
+  order = read_order
+  bundle_definitions = read_bundle_definitions
   processed_order = order_processor(order, bundle_definitions)
   output_delivery_docket(processed_order, bundle_definitions)
 end
 
-main(BUNDLE_DEFINITIONS)
+main
