@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# flower_shop
+
+# 0.0.0
+# 20160926
+
+BUNDLE_DEFINITIONS = {
+  'R12' => {10 => 12.99, 5 => 6.99},
+  'L09' => {9 => 24.95, 6 => 16.95, 3 => 9.95},
+  'T58' => {9 => 16.99, 5 => 9.95, 3 => 5.95},
+}
+
+def bundler(quantity, code, bundles)
+  bundle_definition = BUNDLE_DEFINITIONS[code]
+  divisor = bundle_definition.keys.max
+  bundle_definition.delete(divisor)
+  if divisor <= quantity
+    result, remainder = quantity.divmod(divisor)
+    bundles[result] = divisor
+    bundler(remainder, code, bundles)
+  else
+    raise "This order can't be bundled."
+  end
+end
+
+def order_maker(order)
+  order.each do |line_item|
+    quantity, code = line_item.split
+    bundles = bundler(quantity, code, {})
+  end
+end
+
+def main
+  order = []
+  until (input = gets) == "\n"
+    order << input.strip
+  end
+  order_maker(order)
+end
+
+main
