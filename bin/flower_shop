@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.1.3
+# 0.1.4
 # 20160927
 
 BUNDLE_DEFINITIONS = {
@@ -9,6 +9,14 @@ BUNDLE_DEFINITIONS = {
   'L09' => {9 => 24.95, 6 => 16.95, 3 => 9.95},
   'T58' => {9 => 16.99, 5 => 9.95, 3 => 5.95},
 }
+
+def take_order
+  order = []
+  until (input = gets) == "\n"
+    order << input.chomp
+  end
+  order
+end
 
 def bundler(dividend, bundle_definition, bundles)
   divisor = bundle_definition.keys.max
@@ -37,7 +45,7 @@ def order_processor(order, bundle_definitions)
   end
 end
 
-def output_delivery(processed_order, bundle_definitions)
+def output_delivery_docket(processed_order, bundle_definitions)
   processed_order.each do |line_item|
     total_cost = line_item[:bundles].inject(0){|total, bundle| total += bundle_definitions[line_item[:code]][bundle.first] * bundle.last}
     puts "#{line_item[:quantity]} #{line_item[:code]} $#{format('%.2f', total_cost)}"
@@ -50,12 +58,9 @@ def output_delivery(processed_order, bundle_definitions)
 end
 
 def main(bundle_definitions)
-  order = []
-  until (input = gets) == "\n"
-    order << input.chomp
-  end
+  order = take_order
   processed_order = order_processor(order, bundle_definitions)
-  output_delivery(processed_order, bundle_definitions)
+  output_delivery_docket(processed_order, bundle_definitions)
 end
 
 main(BUNDLE_DEFINITIONS)
