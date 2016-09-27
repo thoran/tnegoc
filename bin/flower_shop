@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.0.6
+# 0.0.7
 # 20160926
 
 BUNDLE_DEFINITIONS = {
@@ -21,6 +21,7 @@ def bundler(quantity, bundle_definition, bundles)
     bundles[divisor] = result
     return_value = bundler(remainder, new_bundle_definition, bundles)
     if return_value.nil?
+      bundles.delete(divisor)
       return_value = bundler(quantity, new_bundle_definition, bundles)
     end
     return_value
