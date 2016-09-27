@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.0.14
+# 0.1.0
 # 20160927
 
 BUNDLE_DEFINITIONS = {
@@ -32,7 +32,17 @@ end
 def order_processor(order, bundle_definitions)
   order.collect do |line_item|
     quantity, code = line_item.split
-    {code => bundler(quantity.to_i, bundle_definitions[code], {})}
+    {quantity: quantity, code: code, bundles: bundler(quantity.to_i, bundle_definitions[code], {})}
+  end
+end
+
+def output_delivery(processed_order, bundle_definitions)
+  processed_order.each do |line_item|
+    total = line_item[:bundles].inject(0){|total, bundle| total += bundle_definitions[line_item[:code]][bundle.first] * bundle.last}
+    puts "#{line_item[:quantity]} #{line_item[:code]} #{total}"
+    line_item[:bundles].each do |bundle|
+      puts "#{bundle.last} x #{bundle.first} $#{(bundle_definitions[line_item[:code]][bundle.first] * bundle.last).round(2)}"
+    end
   end
 end
 
@@ -41,7 +51,8 @@ def main(bundle_definitions)
   until (input = gets) == "\n"
     order << input.chomp
   end
-  p order_processor(order, bundle_definitions)
+  processed_order = order_processor(order, bundle_definitions)
+  output_delivery(processed_order, bundle_definitions)
 end
 
 main(BUNDLE_DEFINITIONS)
