@@ -48,7 +48,7 @@ describe 'flower_shop' do
       instance_eval(File.read(File.join('test', 'fixtures', 'bundle_definitions.rb')))
     end
 
-    it "generates a delivery docket bundle heading" do
+    it "generates a delivery docket bundle breakdown" do
       expectation = '10 R12 $12.99'
       delivery_docket_bundle_heading(order_line_item, bundle_definitions).must_equal(expectation)
     end
@@ -63,7 +63,7 @@ describe 'flower_shop' do
       instance_eval(File.read(File.join('test', 'fixtures', 'bundle_definitions.rb')))
     end
 
-    it "generates a delivery docket bundle heading" do
+    it "generates a delivery docket" do
       expectation = "      1 x 9 $24.95\n      1 x 6 $16.95"
       delivery_docket_bundle_breakdown(order_line_item, bundle_definitions).must_equal(expectation)
     end
