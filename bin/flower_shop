@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # flower_shop
 
-# 0.4.1
+# 0.4.2
 # 20160928
 
 def read_order
@@ -47,7 +47,7 @@ def order_processor(order, bundle_definitions)
   end
 end
 
-def delivery_docket_group_header(order_line_item, bundle_definitions)
+def delivery_docket_bundle_heading(order_line_item, bundle_definitions)
   total_cost = order_line_item[:bundles].inject(0){|total, bundle| total += bundle_definitions[order_line_item[:code]][bundle.first] * bundle.last}
   "#{order_line_item[:quantity]} #{order_line_item[:code]} $#{format('%.2f', total_cost)}"
 end
@@ -64,7 +64,7 @@ end
 def delivery_docket(processed_order, bundle_definitions)
   delivery_docket = []
   processed_order.each do |order_line_item|
-    delivery_docket << delivery_docket_group_header(order_line_item, bundle_definitions)
+    delivery_docket << delivery_docket_bundle_heading(order_line_item, bundle_definitions)
     delivery_docket << delivery_docket_bundle_breakdown(order_line_item, bundle_definitions)
   end
   delivery_docket
